@@ -11,7 +11,7 @@ class AppColors {
 
   // ---- DARK COLORS ----
   static const Color darkBackground = Color(0xFF121212);
-  static const Color darkPrimary    = Color(0xFF9FA8FF);
+  static const Color darkPrimary    = Color.fromARGB(255, 255, 255, 255);
   static const Color darkText       = Colors.white70;
   static const Color darkInputBg    = Color(0xFF1E1E1E);
 
