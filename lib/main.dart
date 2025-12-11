@@ -1,79 +1,34 @@
+import 'package:classhubweb/screens/forgot_password_page.dart';
+import 'package:classhubweb/screens/login_page.dart';
+import 'package:classhubweb/screens/register_page.dart';
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
-import 'screens/home_screen.dart';
-import 'services/auth_service.dart';
 
 void main() {
-  runApp(MyApp());
+  // entry point of the flutter application
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    // material app is the root widget of the application
     return MaterialApp(
-      title: 'Login App',
-      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo', // the title of the application, used by the OS
+      debugShowCheckedModeBanner: false, // removes the debug banner in the top-right corner
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.grey.shade50,
-        ),
+        // define the color scheme of the app
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true, // enable Material Design 3 styling
       ),
-      home: SplashScreen(),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  final _authService = AuthService();
-
-  @override
-  void initState() {
-    super.initState();
-    _checkLoginStatus();
-  }
-
-  Future<void> _checkLoginStatus() async {
-    // Rövid késleltetés a splash screen megjelenítéséhez
-    await Future.delayed(Duration(seconds: 1));
-    
-    final user = await _authService.getLoggedInUser();
-    
-    if (mounted) {
-      if (user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => HomeScreen()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => LoginScreen()),
-        );
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.lock_outline, size: 100, color: Colors.blue),
-            SizedBox(height: 24),
-            CircularProgressIndicator(),
-          ],
-        ),
-      ),
+      initialRoute: '/login', // the first screen that will be displayed when the app starts
+      routes: {
+        // define named routes for navigation within the app
+        '/login': (context) => const LoginPageScreen(), // main login page
+        '/register': (context) => const RegisterScreen(), // user registration page
+        '/forgot-password': (context) => const ForgotPasswordScreen(), // page to reset forgotten password
+      },
     );
   }
 }
