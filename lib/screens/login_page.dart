@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPageScreen> {
                       decoration: InputDecoration(
                         labelText: "E-mail",
                         labelStyle: TextStyle(
-                          color: AppColors.text(context).withOpacity(0.7),
+                          color: AppColors.text(context).withValues(alpha: 0.7),
                         ),
                         prefixIcon: Icon(
                           Icons.email,
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPageScreen> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: AppColors.primary(context).withOpacity(0.3),
+                            color: AppColors.primary(context).withValues(alpha: 0.3),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPageScreen> {
                       decoration: InputDecoration(
                         labelText: "Jelszó",
                         labelStyle: TextStyle(
-                          color: AppColors.text(context).withOpacity(0.7),
+                          color: AppColors.text(context).withValues(alpha: 0.7),
                         ),
                         prefixIcon: Icon(
                           Icons.lock,
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPageScreen> {
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                            color: AppColors.text(context).withOpacity(0.7),
+                            color: AppColors.text(context).withValues(alpha: 0.7),
                           ),
                           onPressed: () {
                             setState(() {
@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPageScreen> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: AppColors.primary(context).withOpacity(0.3),
+                            color: AppColors.primary(context).withValues(alpha: 0.3),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -229,7 +229,7 @@ class _LoginPageState extends State<LoginPageScreen> {
                         'Képernyő: ${size.width.toStringAsFixed(0)} × ${size.height.toStringAsFixed(0)}',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.text(context).withOpacity(0.6),
+                          color: AppColors.text(context).withValues(alpha: 0.6),
                         ),
                       ),
                     ),

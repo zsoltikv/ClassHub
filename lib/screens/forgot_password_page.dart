@@ -52,7 +52,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           "Add meg az e-mail címed, hogy visszaállíthasd a jelszavad",
                           style: TextStyle(
                             fontSize: 16,
-                            color: AppColors.text(context).withOpacity(0.6),
+                            color: AppColors.text(context).withValues(alpha: 0.6),
                           ),
                         ),
                       ],
@@ -70,7 +70,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       decoration: InputDecoration(
                         labelText: "E-mail",
                         labelStyle: TextStyle(
-                          color: AppColors.text(context).withOpacity(0.7),
+                          color: AppColors.text(context).withValues(alpha: 0.7),
                         ),
                         prefixIcon: Icon(
                           Icons.email,
@@ -81,7 +81,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: AppColors.primary(context).withOpacity(0.3),
+                            color: AppColors.primary(context).withValues(alpha: 0.3),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -158,7 +158,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         'Képernyő: ${size.width.toStringAsFixed(0)} × ${size.height.toStringAsFixed(0)}',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.text(context).withOpacity(0.6),
+                          color: AppColors.text(context).withValues(alpha: 0.6),
                         ),
                       ),
                     ),
