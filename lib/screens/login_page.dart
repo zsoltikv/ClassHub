@@ -55,7 +55,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                             color: AppColors.text(context),
                             shadows: [
                               Shadow(
-                                color: Colors.white.withOpacity(0.4),
+                                color: Colors.white.withValues(alpha: 0.4),
                                 blurRadius: 8,
                               ),
                             ],
@@ -169,7 +169,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                                 });
                               },
                               activeColor: AppColors.primary(context),
-                              checkColor: Colors.black,
+                              checkColor: AppColors.inputBackground(context),
                             ),
                             Text("Emlékezz rám",
                                 style:
@@ -218,7 +218,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary(context),
-                              foregroundColor: Colors.black,
+                              foregroundColor: AppColors.inputBackground(context),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

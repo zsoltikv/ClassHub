@@ -49,7 +49,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 letterSpacing: 1.5,
                                 shadows: [
                                   Shadow(
-                                    color: Colors.white.withOpacity(0.4), // a glow színe
+                                    color: Colors.white.withValues(alpha: 0.4), // a glow színe
                                     blurRadius: 8, // mennyire legyen homályos a glow
                                     offset: Offset(0, 0), // eltolás, 0,0 = középen
                                   ),
@@ -136,7 +136,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary(context),
-                              foregroundColor: Colors.black,
+                              foregroundColor: AppColors.inputBackground(context),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

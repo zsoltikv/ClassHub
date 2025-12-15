@@ -5,8 +5,8 @@ class AppColors {
 
   // ---- LIGHT COLORS ----
   static const Color lightBackground = Color(0xFFF5F5F5);
-  static const Color lightPrimary    = Color(0xFF6C63FF);
-  static const Color lightText       = Colors.black87;
+  static const Color lightPrimary    = Color(0xFF1E1E1E);
+  static const Color lightText       = Color(0xFF121212);
   static const Color lightInputBg    = Colors.white;
 
   // ---- DARK COLORS ----

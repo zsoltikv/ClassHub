@@ -57,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 color: AppColors.text(context),
                                 shadows: [
                                   Shadow(
-                                    color: Colors.white.withOpacity(0.4), // a glow színe
+                                    color: Colors.white.withValues(alpha: 0.4), // a glow színe
                                     blurRadius: 8, // mennyire legyen homályos a glow
                                     offset: Offset(0, 0), // eltolás, 0,0 = középen
                                   ),
@@ -241,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary(context),
-                              foregroundColor: Colors.black,
+                              foregroundColor: AppColors.inputBackground(context),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

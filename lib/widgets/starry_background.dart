@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 // star model to store position, size, velocity, and glow
 class Star {
@@ -23,24 +24,26 @@ class Star {
 // custom painter to draw stars with subtle bloom/glow
 class StarryBackgroundPainter extends CustomPainter {
   final List<Star> stars;
+  final Color backgroundColor;
+  final Color starColor;
 
-  StarryBackgroundPainter({required this.stars});
+  StarryBackgroundPainter({required this.stars, required this.backgroundColor, required this.starColor});
 
   @override
   void paint(Canvas canvas, Size size) {
     // fill background black
-    final bgPaint = Paint()..color = Colors.black;
+    final bgPaint = Paint()..color = backgroundColor;
     canvas.drawRect(Offset.zero & size, bgPaint);
 
     for (var star in stars) {
       // glow
       final glowPaint = Paint()
-        ..color = Colors.white.withOpacity(star.brightness * 0.2)
+        ..color = starColor.withValues(alpha: star.brightness * 0.2)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
       canvas.drawCircle(star.position, star.size + star.glow, glowPaint);
 
       // main star
-      final paint = Paint()..color = Colors.white.withOpacity(star.brightness);
+      final paint = Paint()..color = starColor.withValues(alpha: star.brightness);
       canvas.drawCircle(star.position, star.size, paint);
     }
   }
@@ -136,7 +139,7 @@ class _StarryBackgroundState extends State<StarryBackground>
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size.infinite,
-      painter: StarryBackgroundPainter(stars: _stars),
+      painter: StarryBackgroundPainter(stars: _stars, backgroundColor: AppColors.background(context), starColor: AppColors.text(context)),
     );
   }
 }
