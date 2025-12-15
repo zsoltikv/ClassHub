@@ -316,7 +316,7 @@ class _MainPageScreen extends State<MainPageScreen> with TickerProviderStateMixi
 
   Widget _buildSidebar(BuildContext context) {
     return Container(
-      width: 240,
+      width: 125,
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
@@ -348,7 +348,7 @@ class _MainPageScreen extends State<MainPageScreen> with TickerProviderStateMixi
             children: [
               Column(
                 children: [
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   _SidebarItem(
                     icon: Icons.home_rounded,
                     label: 'Csoportok',
@@ -438,7 +438,6 @@ class _MainPageScreen extends State<MainPageScreen> with TickerProviderStateMixi
                           child: Column(
                             children: [
                               _ProfileMenuItem(
-                                label: 'Beállítások',
                                 icon: Icons.settings_rounded,
                                 onTap: () {
                                   setState(() {
@@ -450,7 +449,6 @@ class _MainPageScreen extends State<MainPageScreen> with TickerProviderStateMixi
                               ),
                               Divider(color: Colors.white.withOpacity(0.1), height: 1),
                               _ProfileMenuItem(
-                                label: 'Téma választás',
                                 icon: Icons.palette_rounded,
                                 onTap: () {
                                   setState(() {
@@ -462,7 +460,6 @@ class _MainPageScreen extends State<MainPageScreen> with TickerProviderStateMixi
                               ),
                               Divider(color: Colors.white.withOpacity(0.1), height: 1),
                               _ProfileMenuItem(
-                                label: 'Kijelentkezés',
                                 icon: Icons.logout_rounded,
                                 onTap: () {
                                   setState(() {
@@ -735,26 +732,30 @@ class _SidebarItemState extends State<_SidebarItem> with SingleTickerProviderSta
                         ]
                       : null,
                 ),
-                child: Row(
-                  mainAxisAlignment: widget.isDesktop ? MainAxisAlignment.center : MainAxisAlignment.start,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       widget.icon,
                       color: widget.selected ? Colors.black : Colors.white70,
-                      size: 24,
+                      size: 26,
                     ),
-                    if (widget.isDesktop) const SizedBox(width: 12),
-                    if (widget.isDesktop)
-                      Text(
-                        widget.label,
-                        style: TextStyle(
-                          color: widget.selected ? Colors.black : Colors.white70,
-                          fontWeight: widget.selected ? FontWeight.bold : FontWeight.w500,
-                          fontSize: 15,
-                        ),
+                    const SizedBox(height: 6),
+                    Text(
+                      widget.label,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      style: TextStyle(
+                        color: widget.selected ? Colors.black : Colors.white70,
+                        fontWeight: widget.selected ? FontWeight.bold : FontWeight.w500,
+                        fontSize: 11,
                       ),
+                    ),
                   ],
                 ),
+
               ),
             ),
           );
@@ -765,12 +766,10 @@ class _SidebarItemState extends State<_SidebarItem> with SingleTickerProviderSta
 }
 
 class _ProfileMenuItem extends StatefulWidget {
-  final String label;
   final IconData icon;
   final VoidCallback onTap;
 
   const _ProfileMenuItem({
-    required this.label,
     required this.icon,
     required this.onTap,
   });
@@ -791,27 +790,16 @@ class _ProfileMenuItemState extends State<_ProfileMenuItem> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: _isHovering ? Colors.white.withOpacity(0.1) : Colors.transparent,
           ),
-          child: Row(
-            children: [
-              Icon(
-                widget.icon,
-                color: Colors.white70,
-                size: 20,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                widget.label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+          child: Center(
+            child: Icon(
+              widget.icon,
+              color: Colors.white70,
+              size: 24,
+            ),
           ),
         ),
       ),
