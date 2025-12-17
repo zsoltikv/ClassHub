@@ -14,7 +14,7 @@ class LoginPageScreen extends StatefulWidget {
 
 class _LoginPageScreenState extends State<LoginPageScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   bool _obscurePassword = true;
@@ -56,29 +56,42 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                           ),
                         ),
                         const SizedBox(height: 28),
-                        // Email field
                         TextFormField(
-                          controller: _emailController,
+                          controller: _usernameController,
                           style: TextStyle(color: AppColors.text(context)),
                           cursorColor: AppColors.primary(context),
                           decoration: InputDecoration(
-                            labelText: "E-mail",
-                            labelStyle: TextStyle(color: AppColors.text(context).withOpacity(0.7)),
-                            prefixIcon: Icon(Icons.email, color: AppColors.primary(context)),
+                            labelText: "Felhasználónév",
+                            labelStyle: TextStyle(
+                              color: AppColors.text(context).withOpacity(0.7),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: AppColors.primary(context),
+                            ),
                             filled: true,
                             fillColor: AppColors.inputBackground(context),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: AppColors.primary(context).withOpacity(0.3)),
+                              borderSide: BorderSide(
+                                color: AppColors.primary(context).withOpacity(0.3),
+                              ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: AppColors.primary(context), width: 2),
+                              borderSide: BorderSide(
+                                color: AppColors.primary(context),
+                                width: 2,
+                              ),
                             ),
                           ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) return "Kérlek add meg az e-mail címed!";
-                            if (!value.contains("@")) return "Nem érvényes e-mail cím.";
+                            if (value == null || value.isEmpty) {
+                              return "Kérlek add meg a felhasználóneved!";
+                            }
+                            if (value.length < 3) {
+                              return "A felhasználónév legalább 3 karakter legyen.";
+                            }
                             return null;
                           },
                         ),
@@ -136,14 +149,14 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
                         // Login button
                         SizedBox(
                           height: 48,
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                _login(); // Call login API
+                                _login(); 
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -183,6 +196,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   }
 
   Future<void> _login() async {
+    final username = _usernameController.text.trim();
     final password = _passwordController.text;
     final url = Uri.parse('http://188.36.204.175:8080/api/auth/login');
 
@@ -191,7 +205,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'userName': "TODO ITT LESZ A FELHASZNALONEV",
+          'userName': username,
           'password': password,
           'rememberMe': _rememberMe,
         }),
@@ -201,7 +215,6 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
       print(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success → navigate to main page
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainPageScreen()));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -217,7 +230,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
