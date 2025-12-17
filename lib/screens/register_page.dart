@@ -18,6 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _obscureConfirmPassword = true;
 
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -117,6 +118,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }
                             if (!value.contains("@")) {
                               return "Nem érvényes e-mail cím.";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        TextFormField(
+                          controller: _usernameController,
+                          style: TextStyle(color: AppColors.text(context)),
+                          cursorColor: AppColors.primary(context),
+                          decoration: InputDecoration(
+                            labelText: "Felhasználónév",
+                            labelStyle: TextStyle(
+                              color: AppColors.text(context).withValues(alpha: 0.7),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: AppColors.primary(context),
+                            ),
+                            filled: true,
+                            fillColor: AppColors.inputBackground(context),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: AppColors.primary(context).withValues(alpha: 0.3),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: AppColors.primary(context),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Kérlek add meg a felhasználóneved!";
+                            }
+                            if (value.length < 3) {
+                              return "A felhasználónév legalább 3 karakter legyen.";
                             }
                             return null;
                           },
@@ -239,6 +282,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (value == null || value.isEmpty) {
                               return "Kérlek erősítsd meg a jelszavad!";
                             }
+                            if (value != _passwordController.text) {
+                              return "A jelszavak nem egyeznek.";
+                            }
                             return null;
                           },
                         ),
@@ -312,6 +358,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _register() async {
   final email = _emailController.text.trim();
+  final username = _usernameController.text.trim();
   final password = _passwordController.text;
 
   final url = Uri.parse('http://188.36.204.175:8080/api/register');
@@ -323,7 +370,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'userName': "", 
+        'userName': username, 
         'email': email,
         'password': password,
         'rememberMe': true
@@ -342,6 +389,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 @override
 void dispose() {
+  _usernameController.dispose();
   _emailController.dispose();
   _passwordController.dispose();
   super.dispose();
