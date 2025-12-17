@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/starry_background.dart';
@@ -15,6 +17,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
 
   bool _obscureConfirmPassword = true;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const SizedBox(height: 28),
 
                         TextFormField(
+                          controller: _emailController,
                           style: TextStyle(color: AppColors.text(context)),
                           cursorColor: AppColors.primary(context),
                           decoration: InputDecoration(
@@ -119,6 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const SizedBox(height: 16),
 
                         TextFormField(
+                          controller: _passwordController,
                           obscureText: _obscurePassword,
                           style: TextStyle(color: AppColors.text(context)),
                           cursorColor: AppColors.primary(context),
@@ -243,7 +250,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                print("Regisztráció sikeres (demo)");
+                                _register();
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -302,4 +309,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+
+  Future<void> _register() async {
+  final email = _emailController.text.trim();
+  final password = _passwordController.text;
+
+  final url = Uri.parse('http://188.36.204.175:8080/api/register');
+
+  try {
+    print(email);
+    print(password);
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'userName': "beufbesuibfuesfiusbf", 
+        'email': email,
+        'password': password,
+        'rememberMe': true
+      }),
+    );
+
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print('Sikeres regisztráció');
+    } else {
+      print('Hiba: ${response.body}');
+    }
+  } catch (e) {
+    print('Hálózati hiba: $e');
+  }
+}
+
+@override
+void dispose() {
+  _emailController.dispose();
+  _passwordController.dispose();
+  super.dispose();
+}
+
 }
