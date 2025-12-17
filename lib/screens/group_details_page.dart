@@ -9,8 +9,51 @@ class GroupDetailPage extends StatefulWidget {
   _GroupDetailPageState createState() => _GroupDetailPageState();
 }
 
+String roleLabel(String role) {
+  switch (role) {
+    case "admin":
+      return "Adminisztrátor";
+    case "moderator":
+      return "Moderátor";
+    default:
+      return "Tag";
+  }
+}
+
+Color roleColor(String role) {
+  switch (role) {
+    case "admin":
+      return Colors.redAccent;
+    case "moderator":
+      return Colors.orangeAccent;
+    default:
+      return Colors.white.withOpacity(0.6);
+  }
+}
+
+class GroupMember {
+  final String id;
+  final String name;
+  final String role; // admin | moderator | member
+
+  GroupMember({
+    required this.id,
+    required this.name,
+    required this.role,
+  });
+}
+
+
 class _GroupDetailPageState extends State<GroupDetailPage>
     with TickerProviderStateMixin {
+
+  final List<GroupMember> members = [
+  GroupMember(id: "1", name: "Kovács Anna", role: "admin"),
+  GroupMember(id: "2", name: "Nagy Péter", role: "moderator"),
+  GroupMember(id: "3", name: "Szabó Emma", role: "member"),
+  GroupMember(id: "4", name: "Tóth Márk", role: "member"),
+  ];
+
   int selectedIndex = 0;
   int? hoveredIndex;
   final TextEditingController _chatController = TextEditingController();
@@ -151,6 +194,7 @@ class _GroupDetailPageState extends State<GroupDetailPage>
             SizedBox(height: 24),
             navButton("Csevegés", 0, icon: Icons.chat_rounded),
             navButton("Posztok", 1, icon: Icons.article_rounded),
+            navButton("Tagok", 2, icon: Icons.people_rounded),
           ],
         ),
       );
@@ -180,6 +224,7 @@ class _GroupDetailPageState extends State<GroupDetailPage>
             children: [
               navButton("Chat", 0, icon: Icons.chat_rounded),
               navButton("Bejegyzések", 1, icon: Icons.article_rounded),
+              navButton("Tagok", 2, icon: Icons.people_rounded),
             ],
           ),
         ),
@@ -430,65 +475,145 @@ class _GroupDetailPageState extends State<GroupDetailPage>
     );
   }
 
-  Widget buildContent() {
-    if (selectedIndex == 0) {
-      return Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-              children: [
-                buildChatBubble(
-                  "Sziasztok! Van valakinek a házi feladat megoldása?",
-                  false,
-                  "10:23",
-                ),
-                buildChatBubble("Szia! Igen, küldöm neked.", true, "10:25"),
-                buildChatBubble("Köszönöm szépen! 🙏", false, "10:26"),
-                buildChatBubble(
-                  "Nincs mit! Ha kérdésed van, írj bátran.",
-                  true,
-                  "10:27",
-                ),
-              ],
-            ),
+Widget buildMembersView() {
+  return ListView.builder(
+    padding: EdgeInsets.all(16),
+    itemCount: members.length,
+    itemBuilder: (context, index) {
+      final member = members[index];
+
+      return Container(
+        margin: EdgeInsets.only(bottom: 12),
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.08),
+            width: 1,
           ),
-          buildInputRow(isChat: true),
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.all(16),
-              children: [
-                buildPostCard(
-                  "Kovács Anna",
-                  "Sziasztok! Megosztanám veletek a mai előadás jegyzetét. Aki szeretné, írjon rám!",
-                  "2 órája",
-                  12,
+        ),
+        child: Row(
+          children: [
+            // Avatar
+            CircleAvatar(
+              radius: 22,
+              backgroundColor: getGroupColor().withOpacity(0.8),
+              child: Text(
+                member.name[0],
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
                 ),
-                buildPostCard(
-                  "Nagy Péter",
-                  "Holnap lesz az évfolyamdolgozat, sok sikert mindenkinek! 📚",
-                  "5 órája",
-                  24,
-                ),
-                buildPostCard(
-                  "Szabó Emma",
-                  "Találtam egy nagyon jó videót a témához, érdemes megnézni!",
-                  "1 napja",
-                  8,
-                ),
-              ],
+              ),
             ),
-          ),
-          buildInputRow(isChat: false),
-        ],
+
+            SizedBox(width: 14),
+
+            // Név + rang
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    member.name,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.95),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    roleLabel(member.role),
+                    style: TextStyle(
+                      color: roleColor(member.role),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Icon(
+              Icons.chevron_right_rounded,
+              color: Colors.white.withOpacity(0.3),
+            ),
+          ],
+        ),
       );
-    }
+    },
+  );
+}
+
+Widget buildContent() {
+  if (selectedIndex == 0) {
+    // 💬 CHAT
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            children: [
+              buildChatBubble(
+                "Sziasztok! Van valakinek a házi feladat megoldása?",
+                false,
+                "10:23",
+              ),
+              buildChatBubble("Szia! Igen, küldöm neked.", true, "10:25"),
+              buildChatBubble("Köszönöm szépen! 🙏", false, "10:26"),
+              buildChatBubble(
+                "Nincs mit! Ha kérdésed van, írj bátran.",
+                true,
+                "10:27",
+              ),
+            ],
+          ),
+        ),
+        buildInputRow(isChat: true),
+      ],
+    );
+  } else if (selectedIndex == 1) {
+    // 📰 POSZTOK
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.all(16),
+            children: [
+              buildPostCard(
+                "Kovács Anna",
+                "Sziasztok! Megosztanám veletek a mai előadás jegyzetét. Aki szeretné, írjon rám!",
+                "2 órája",
+                12,
+              ),
+              buildPostCard(
+                "Nagy Péter",
+                "Holnap lesz az évfolyamdolgozat, sok sikert mindenkinek! 📚",
+                "5 órája",
+                24,
+              ),
+              buildPostCard(
+                "Szabó Emma",
+                "Találtam egy nagyon jó videót a témához, érdemes megnézni!",
+                "1 napja",
+                8,
+              ),
+            ],
+          ),
+        ),
+        buildInputRow(isChat: false),
+      ],
+    );
+  } else if (selectedIndex == 2) {
+    // 👥 TAGOK
+    return buildMembersView();
   }
+
+  // fallback (biztonsági)
+  return SizedBox.shrink();
+}
 
   Widget buildInputRow({required bool isChat}) {
     final controller = isChat ? _chatController : _postController;
