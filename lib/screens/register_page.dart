@@ -317,23 +317,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final url = Uri.parse('http://188.36.204.175:8080/api/register');
 
   try {
-    print(email);
-    print(password);
     final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'userName': "beufbesuibfuesfiusbf", 
+        'userName': "", 
         'email': email,
         'password': password,
         'rememberMe': true
       }),
     );
-
-    print(response.statusCode);
-    print(response.body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       print('Sikeres regisztráció');
